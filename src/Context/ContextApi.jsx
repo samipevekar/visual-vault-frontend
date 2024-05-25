@@ -117,9 +117,17 @@ export default function ContextApi(props) {
         reconnectionAttempts: 5,
       });
 
+      newSocket.on('error', (error) => {
+        console.error('WebSocket Error:', error.message);
+      });
 
+      newSocket.on("connect_error", (error) => {
+        console.error("Connection Error:", error);
+        toast.error("Connection error");
+      });
+      
       setSocket(newSocket);
-
+      
       newSocket.on("getOnlineUsers", (users) => {
         setOnlineUsers(users);
       });
@@ -127,13 +135,9 @@ export default function ContextApi(props) {
 
       return () => {
         newSocket.close();
+        setSocket(null);
       };
-    }else{
-      if(socket){
-          socket.close();
-          setSocket(null)
-      }
-  }
+    }
   }, [userInfo]);
 
   return (
