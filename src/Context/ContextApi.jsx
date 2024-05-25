@@ -110,11 +110,6 @@ export default function ContextApi(props) {
       const newSocket = io(HOST, {
         query: { userId: userInfo._id },
         transports: ['websocket', 'polling'],
-        reconnection: true,
-        reconnectionDelay: 1000,
-        reconnectionDelayMax: 5000,
-        path: '/socket',
-        reconnectionAttempts: 5,
       });
 
       newSocket.on('connect', () => {
