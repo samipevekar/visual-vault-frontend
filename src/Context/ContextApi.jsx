@@ -4,8 +4,8 @@ import toast from "react-hot-toast";
 import io from "socket.io-client";
 
 export default function ContextApi(props) {
-  const HOST = "https://visual-vault-backend.onrender.com";
-  // const HOST = "http://localhost:4000";
+  // const HOST = "https://visual-vault-backend.onrender.com";
+  const HOST = "http://localhost:4000";
 
   const [isOpen, setIsOpen] = useState(false);
   const handle_toggle = () => {
@@ -117,6 +117,10 @@ export default function ContextApi(props) {
         reconnectionAttempts: 5,
       });
 
+      newSocket.on('connect', () => {
+        console.log('WebSocket connected');
+      });
+
       newSocket.on('error', (error) => {
         console.error('WebSocket Error:', error.message);
       });
@@ -125,13 +129,20 @@ export default function ContextApi(props) {
         console.error("Connection Error:", error);
         toast.error("Connection error");
       });
-      
+
+      newSocket.on('disconnect', (reason) => {
+        console.log('WebSocket disconnected:', reason);
+        if (reason === 'io server disconnect') {
+          // The disconnection was initiated by the server, you need to reconnect manually
+          newSocket.connect();
+        }
+      });
+
       setSocket(newSocket);
-      
+
       newSocket.on("getOnlineUsers", (users) => {
         setOnlineUsers(users);
       });
-
 
       return () => {
         newSocket.close();
