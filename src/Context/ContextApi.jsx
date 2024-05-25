@@ -107,36 +107,25 @@ export default function ContextApi(props) {
 
   useEffect(() => {
     if (userInfo && userInfo._id) {
-      const newSocket = io(HOST, {
+      const socket = io("https://visual-vault-backend.onrender.com", {
         query: { userId: userInfo._id },
         transports: ['websocket', 'polling'],
         reconnection: true,
-        reconnectionDelay: 1000,
-        reconnectionDelayMax: 5000,
-        path: '/socket',
-        reconnectionAttempts: 5,
       });
 
-      newSocket.on('error', (error) => {
-        console.error('WebSocket Error:', error.message);
-      });
+      setSocket(socket);
 
-      newSocket.on("connect_error", (error) => {
-        console.error("Connection Error:", error);
-        toast.error("Connection error");
-      });
-
-      newSocket.on("getOnlineUsers", (users) => {
+      socket.on("getOnlineUsers", (users) => {
         setOnlineUsers(users);
       });
 
-      setSocket(newSocket);
-
-      return () => {
-        newSocket.close();
-        setSocket(null);
-      };
-    }
+      return () => socket.close();
+    }else{
+      if(socket){
+          socket.close();
+          setSocket(null)
+      }
+  }
   }, [userInfo]);
 
   return (
