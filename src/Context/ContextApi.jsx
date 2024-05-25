@@ -107,19 +107,27 @@ export default function ContextApi(props) {
 
   useEffect(() => {
     if (userInfo && userInfo._id) {
-      const socket = io("https://visual-vault-backend.onrender.com", {
+      const newSocket = io(HOST, {
         query: { userId: userInfo._id },
         transports: ['websocket', 'polling'],
         reconnection: true,
+        reconnectionDelay: 1000,
+        reconnectionDelayMax: 5000,
+        path: '/socket',
+        reconnectionAttempts: 5,
       });
 
-      setSocket(socket);
 
-      socket.on("getOnlineUsers", (users) => {
+      setSocket(newSocket);
+
+      newSocket.on("getOnlineUsers", (users) => {
         setOnlineUsers(users);
       });
 
-      return () => socket.close();
+
+      return () => {
+        newSocket.close();
+      };
     }else{
       if(socket){
           socket.close();
