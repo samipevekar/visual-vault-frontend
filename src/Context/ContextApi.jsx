@@ -19,6 +19,7 @@ export default function ContextApi(props) {
     return `${day} ${month} ${year}`;
   }
 
+
   const [userInfo, setUserInfo] = useState({});
   const getUser = async () => {
     try {
@@ -59,6 +60,7 @@ export default function ContextApi(props) {
   const all_images = async () => {
     try {
       setProgress(30);
+      setLoading(true)
       const response = await fetch(`${HOST}/api/image/getallimages`, {
         method: "GET",
         headers: {
@@ -72,12 +74,14 @@ export default function ContextApi(props) {
       toast.error("Internal server error");
     } finally {
       setProgress(100);
+      setLoading(false)
     }
   };
 
   const favorite_images = async () => {
     try {
       setProgress(30);
+      setLoading(true)
       const response = await fetch(`${HOST}/api/image/getfavoriteimage`, {
         method: "GET",
         headers: {
@@ -91,6 +95,7 @@ export default function ContextApi(props) {
       toast.error("Internal server error");
     } finally {
       setProgress(100);
+      setLoading(false)
     }
   };
 
