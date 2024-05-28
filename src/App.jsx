@@ -24,6 +24,7 @@ export default function App() {
       <LoadingBar height={2.5} color='#f11946' progress={progress}/> 
       <Navbar/>
       {isOpen===true && <BackDrop/>}
+      
       <Home/>
       <Routes>
         <Route exact path='/signup' element={<Signup/>}></Route>
