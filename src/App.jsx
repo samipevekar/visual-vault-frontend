@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
 import Navbar from './components/Navbar/Navbar'
-import {Routes,Route } from "react-router-dom"
+import {Routes,Route, Navigate } from "react-router-dom"
 import Signup from './pages/Signup/Signup'
 import Home from './pages/HomePage/Home'
 import Footer from './components/Footer/Footer'
@@ -21,13 +21,13 @@ export default function App() {
     <ErrorBoundary fallback={<ErrorComponent/>}>
     
       <Toaster/>
-      <LoadingBar height={2.5} color='#f11946' progress={progress}/> 
+      <LoadingBar height={3} color='#f11946' progress={progress}/> 
       <Navbar/>
       {isOpen===true && <BackDrop/>}
       
       <Home/>
       <Routes>
-        <Route exact path='/signup' element={<Signup/>}></Route>
+        <Route path='/signup' element={<Signup/>}></Route>
       </Routes> 
       <Footer/>
     </ErrorBoundary>
