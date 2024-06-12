@@ -6,20 +6,19 @@ import useConversation from "../zustand/userConversation";
 
 export default function ContextApi(props) {
 
-  const HOST = "https://visual-vault.onrender.com"
+  const HOST = "https://visual-vault-backend.onrender.com"
   // const HOST = "http://localhost:4000";
 
-  const [isOpen, setIsOpen] = useState(false);     // to handle user info menu
-  const handle_toggle = () => setIsOpen(!isOpen);  
+  const [isOpen, setIsOpen] = useState(false);
+  const handle_toggle = () => setIsOpen(!isOpen);
 
-  function formatDate(dateString) {                 // convert date into given format
+  function formatDate(dateString) {
     const options = { day: '2-digit', month: 'short', year: 'numeric' };
     const formattedDate = new Date(dateString).toLocaleDateString('en-US', options);
     const [day, month, year] = formattedDate.split(' ');
     return `${day} ${month} ${year}`;
   }
 
-  // api to get login user info
   const [userInfo, setUserInfo] = useState({});
   const getUser = async () => {
     try {
@@ -34,7 +33,6 @@ export default function ContextApi(props) {
     }
   };
 
-  // api to get all users
   const [allUsers, setAllUsers] = useState([]);
   const [loading, setLoading] = useState(false);
   const getAllUsers = async () => {
@@ -53,7 +51,6 @@ export default function ContextApi(props) {
     }
   };
 
-  // api to get all images
   const [imageData, setImageData] = useState([]);
   const all_images = async () => {
     try {
@@ -74,7 +71,6 @@ export default function ContextApi(props) {
     }
   };
 
-  // api to get favorite images
   const favorite_images = async () => {
     try {
       setProgress(30);
@@ -94,16 +90,14 @@ export default function ContextApi(props) {
     }
   };
 
-  const [progress, setProgress] = useState(0);  // state to manage react top loading bar
+  const [progress, setProgress] = useState(0);
 
   useEffect(() => {
     all_images();
     favorite_images();
     getUser();
-    getMessages();
   }, []);
 
-  // socket code here
   const [socket, setSocket] = useState(null);
   const [onlineUsers, setOnlineUsers] = useState([]);
 
@@ -112,9 +106,6 @@ export default function ContextApi(props) {
       const newSocket = io(HOST, {
         query: { userId: userInfo._id },
         transports: ['websocket', 'polling'],
-        reconnectionAttempts: 5, // Number of reconnection attempts
-        reconnectionDelay: 2000, // Time between reconnections (ms)
-        reconnectionDelayMax: 5000, // Max time between reconnections (ms)
       });
 
       newSocket.on('connect', () => {
@@ -137,11 +128,16 @@ export default function ContextApi(props) {
         }
       });
 
-      setSocket(newSocket);
-
       newSocket.on("getOnlineUsers", (users) => {
         setOnlineUsers(users);
       });
+
+      newSocket.on('newMessage', (message) => {
+        // Listen for new messages and update conversations accordingly
+        updateLatestMessage(message);
+      });
+
+      setSocket(newSocket);
 
       return () => {
         newSocket.close();
@@ -150,7 +146,6 @@ export default function ContextApi(props) {
     }
   }, [userInfo]);
 
-  // api to get all messages
   const { setMessages, selectedConversation } = useConversation();
 
   const getMessages = async () => {
@@ -166,7 +161,8 @@ export default function ContextApi(props) {
     }
   }
 
-  // Mark messages as seen
+  
+
   const markMessagesAsSeen = async (conversationId) => {
     try {
       await fetch(`${HOST}/api/messages/markseen/${conversationId}`, {
