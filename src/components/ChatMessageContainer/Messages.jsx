@@ -8,8 +8,8 @@ import MessageSkeleton from '../skeletons/MessageSkeleton';
 export default function Messages() {
 
   const {messages,setMessages,selectedConversation} = useConversation()
-  const [loading,setLoading] = useState(false)
-  const {getMessages} = useContext(shopContext)
+  const [loading] = useState(false)
+  const {getMessages,userInfo} = useContext(shopContext)
 
   const messagesContainerRef = useRef(null);
 
@@ -21,14 +21,10 @@ export default function Messages() {
   
 
   useEffect(()=>{
-    if(selectedConversation?._id){
       getMessages()
-
-    }
-  },[selectedConversation?._id,setMessages])
+  },[selectedConversation._id,messages])
 
   useEffect(scrollToBottom, [messages]);
-
 
   return (
     <div  className='px-4 flex-1 overflow-auto h-[430px]' ref={messagesContainerRef}>
