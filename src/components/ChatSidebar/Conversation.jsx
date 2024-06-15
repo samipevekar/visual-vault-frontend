@@ -32,7 +32,7 @@ export default function Conversation({ conversation, lastIdx }) {
 
     useEffect(() => {
         getLatestMessage();
-    }, [messages,latestMessage]); // Re-fetch on messages or conversation change
+    }, [latestMessage]); // Re-fetch on messages or conversation change
 
     const fromMe = latestMessage?.senderId === userInfo?._id;
     const isUnread = latestMessage && !latestMessage.seenBy?.includes(userInfo?._id);
@@ -62,7 +62,7 @@ export default function Conversation({ conversation, lastIdx }) {
                     </div>
                 </div>
                 {latestMessage && isUnread && !fromMe && (
-                    <div className='absolute right-5 rounded-lg h-4 w-4 bg-blue-400'></div>
+                    <div className='absolute right-5 flex text-[10px] text-white justify-center items-center rounded-lg h-4 w-4 bg-red-500'>N</div>
                 )}
             </div>
             {!lastIdx && <div className='divider my-0 py-0 h-1 ' />}

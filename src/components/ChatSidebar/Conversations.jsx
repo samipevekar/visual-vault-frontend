@@ -33,7 +33,7 @@ export default function Conversations() {
         />
       ))}
 
-      {loading && [...Array(5)].map((_, idx) => <ConversationSkeleton key={idx} />)}
+      {/* {loading && [...Array(5)].map((_, idx) => <ConversationSkeleton key={idx} />)} */}
     </div>
   );
 }

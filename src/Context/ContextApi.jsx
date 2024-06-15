@@ -6,8 +6,8 @@ import useConversation from "../zustand/userConversation";
 
 export default function ContextApi(props) {
 
-  const HOST = "https://visual-vault-backend.onrender.com"
-  // const HOST = "http://localhost:4000";
+  // const HOST = "https://visual-vault-backend.onrender.com"
+  const HOST = "http://localhost:4000";
 
   const [isOpen, setIsOpen] = useState(false);
   const handle_toggle = () => setIsOpen(!isOpen);
@@ -29,7 +29,7 @@ export default function ContextApi(props) {
       const data = await response.json();
       setUserInfo(data);
     } catch (error) {
-      toast.error("Internal server error");
+      console.error("Internal server error");
     }
   };
 
@@ -45,7 +45,7 @@ export default function ContextApi(props) {
       const data = await response.json();
       setAllUsers(data);
     } catch (error) {
-      toast.error("Internal server error");
+      console.error("Internal server error");
     } finally {
       setLoading(false);
     }
@@ -64,7 +64,7 @@ export default function ContextApi(props) {
       const data = await response.json();
       setImageData(data);
     } catch (error) {
-      toast.error("Internal server error");
+      console.error("Internal server error");
     } finally {
       setProgress(100);
       setLoading(false);
@@ -83,7 +83,7 @@ export default function ContextApi(props) {
       const data = await response.json();
       setImageData(data);
     } catch (error) {
-      toast.error("Internal server error");
+      console.error("Internal server error");
     } finally {
       setProgress(100);
       setLoading(false);
@@ -118,7 +118,7 @@ export default function ContextApi(props) {
 
       newSocket.on("connect_error", (error) => {
         console.error("Connection Error:", error);
-        toast.error("Connection error");
+        console.error("Connection error");
       });
 
       newSocket.on('disconnect', (reason) => {
@@ -146,26 +146,30 @@ export default function ContextApi(props) {
     }
   }, [userInfo]);
 
-  const { setMessages, selectedConversation } = useConversation();
+  const { setMessages, selectedConversation, messages } = useConversation();
 
   const getMessages = async () => {
-    if(selectedConversation){
-      setLoading(true);
-      const response = await fetch(`${HOST}/api/messages/${selectedConversation._id}`, {
-        method: "GET",
-        headers: { "auth-token": localStorage.getItem("auth-token") }
-      });
-      const data = await response.json();
-      setMessages(data);
-      setLoading(false);
+        setLoading(true);
+        try {
+          const response = await fetch(`${HOST}/api/messages/${selectedConversation._id}`, {
+            method: "GET",
+            headers: { "auth-token": localStorage.getItem("auth-token") }
+          });
+          const data = await response.json();
+          setMessages(data);
+          setLoading(false);
+          
+        } catch (error) {
+          console.error("Internal server error")
+        }
     }
-  }
+    
 
   
 
-  const markMessagesAsSeen = async (conversationId) => {
+  const markMessagesAsSeen = async () => {
     try {
-      await fetch(`${HOST}/api/messages/markseen/${conversationId}`, {
+      await fetch(`${HOST}/api/messages/markseen/${selectedConversation._id}`, {
         method: "POST",
         headers: {
           'Content-Type': 'application/json',
@@ -179,7 +183,8 @@ export default function ContextApi(props) {
 
   useEffect(() => {
     if (selectedConversation) {
-      markMessagesAsSeen(selectedConversation?._id);
+      markMessagesAsSeen();
+      getMessages();
     }
   }, [selectedConversation]);
 
@@ -202,8 +207,8 @@ export default function ContextApi(props) {
       getAllUsers,
       socket,
       onlineUsers,
-      loading,
       getMessages,
+      loading,
       markMessagesAsSeen
     }}>
       {props.children}
