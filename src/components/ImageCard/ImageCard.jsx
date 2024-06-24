@@ -88,7 +88,7 @@ const ImageCard = (props) => {
 
         <div className="image-icons">
           {location.pathname==="/favorites"?<></>:<img src={delete_icon} onClick={()=>handleDeleteClick(props.id)}  className="delete_icon" alt="Delete" />}
-          <img src={imageSrc} style={location.pathname==="/favorites"?{right:"10px"}:{right:"40px"}} onClick={()=>handleHeartClick(props.id)} className="heart_icon" alt="Heart" />
+          <img src={imageSrc}  style={location.pathname==="/favorites"?{right:"10px"}:{right:"40px"}} onClick={()=>handleHeartClick(props.id)} className="heart_icon" alt="Heart" />
         </div>
       </div>
 
