@@ -27,3 +27,11 @@ body,html{
     background-color: gray;
     border-radius:5px
 }
+
+
+@media (min-width:1280px){
+    body{
+        width:1280px;
+        margin:auto
+    }
+}
