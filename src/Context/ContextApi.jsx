@@ -12,6 +12,8 @@ export default function ContextApi(props) {
   const [isOpen, setIsOpen] = useState(false);
   const handle_toggle = () => setIsOpen(!isOpen);
 
+  const [showModal,setShowModal] = useState(false)  // show/hide modal for images
+
   function formatDate(dateString) {
     const options = { day: '2-digit', month: 'short', year: 'numeric' };
     const formattedDate = new Date(dateString).toLocaleDateString('en-US', options);
@@ -203,7 +205,9 @@ export default function ContextApi(props) {
       userLoading,
       imageLoading,
       msgLoading,
-      markMessagesAsSeen
+      markMessagesAsSeen,
+      showModal,
+      setShowModal
     }}>
       {props.children}
     </shopContext.Provider>
