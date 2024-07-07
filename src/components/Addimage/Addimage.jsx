@@ -25,7 +25,7 @@ export default function Addimage() {
     formData.append('post', image);
 
     try {
-      setProgress(20);
+      setProgress(10);
       const uploadResponse = await fetch(`${HOST}/api/image/upload`, {
         method: "POST",
         headers: {
@@ -78,11 +78,11 @@ export default function Addimage() {
       <div className='addimage'>
         <input type="file" accept="image/*" hidden id='image' onChange={handleImage} />
         <label htmlFor="image">+</label>
-        <p>Click here to add</p>
+        <p className='text-[15px] font-semibold my-1'>Click to Add</p>
         <div className="imageshow">
           <img src={image ? URL.createObjectURL(image) : null} alt="" />
         </div>
-        {image && <button onClick={add_image} className='btn btn-primary my-4' type='submit'>Add</button>}
+        {image && <button onClick={add_image} className='submit bg-red-500 my-5 text-white p-2 rounded hover:bg-red-700' type='submit'>Add</button>}
       </div>
     </div>
   );
