@@ -57,7 +57,7 @@ export default function ContextApi(props) {
   const [imageData, setImageData] = useState([]);
   const all_images = async () => {
     try {
-      setProgress(30);
+      setProgress(10);
       setImageLoading(true);
       const response = await fetch(`${HOST}/api/image/getallimages`, {
         method: "GET",
@@ -76,7 +76,7 @@ export default function ContextApi(props) {
 
   const favorite_images = async () => {
     try {
-      setProgress(30);
+      setProgress(10);
       setImageLoading(true);
       const response = await fetch(`${HOST}/api/image/getfavoriteimage`, {
         method: "GET",

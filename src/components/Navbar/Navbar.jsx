@@ -39,7 +39,7 @@ export default function Navbar() {
 
   return (
     <>
-      <nav className="navbar z-1 sticky-top navbar-expand-lg bg-white">
+      <nav className="navbar z-1 sticky-top navbar-expand-lg border-b-[1.5px] border-gray-100 bg-white">
   <div className="container-fluid">
     {localStorage.getItem("auth-token")?<img src={hamburger_logo} className={isOpen?'hamburger hamOpen':"hamburger"} onClick={handle_toggle}  alt="" />:<></>}
     <Link to="/"><div className="logo">
