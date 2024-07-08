@@ -19,7 +19,7 @@ export default function Home() {
 
   return (
     <div className='homepage'>
-      <React.Suspense fallback={<Loader/>}><Aside /></React.Suspense>
+      <React.Suspense fallback=''><Aside /></React.Suspense>
       <div className='homeComponents'>
           <DisplayImage/> 
         <Routes>
