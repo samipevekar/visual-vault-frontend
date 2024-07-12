@@ -23,7 +23,9 @@ export default function Navbar() {
   };
 
   useEffect(() => {
-    getUser();
+    if(userInfo){
+      getUser();
+    }
     // eslint-disable-next-line
   }, []);
 
@@ -59,7 +61,7 @@ export default function Navbar() {
                 e.target.src = user1;
               }}
               alt=""
-              className="mr-2"
+              className=""
             />
             <p>{localStorage.getItem('auth-token') ? userInfo.name : ''}</p>
           </div>

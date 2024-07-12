@@ -8,7 +8,7 @@ import Loader from '../Loader/Loader'
 
 export default function DisplaySearch() {
 
-  const { formatDate, all_images, HOST } = useContext(shopContext); // Getting functions from context api
+  const { formatDate, all_images, HOST,imageData } = useContext(shopContext); // Getting functions from context api
 
   const [searchData, setSearchData] = useState([]);    // To manage search data
   const [searchValue, setSearchValue] = useState(''); // To handle onChange
@@ -40,8 +40,10 @@ export default function DisplaySearch() {
     setSearchValue(e.target.value);
   };
 
-  useEffect(() => {                        
-    all_images();
+  useEffect(() => { 
+    if(imageData){
+      all_images();
+    }                       
   }, []);
 
   const handleSubmit = (e) => {
@@ -55,7 +57,7 @@ export default function DisplaySearch() {
       <form onSubmit={handleSubmit}>
         <div className='searchBar'>
           <input className="input input-bordered rounded-full mr-2" required onChange={handleOnChange} value={searchValue} type="search" placeholder="yyyy-mm-dd" aria-label="Search"/>
-          <button className="p-2 searchButton rounded-full " type="submit" ><img src={search_icon} className='w-8 p-0 ' alt="" /></button>
+          <button className="p-2  searchButton rounded-full   " type="submit" ><img src={search_icon} className='w-8 h-10  ' alt="" /></button>
         </div>
       </form>
 
