@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import shopContext from "./ShopContext";
-import toast from "react-hot-toast";
 import io from "socket.io-client";
 import useConversation from "../zustand/userConversation";
 
@@ -95,11 +94,7 @@ export default function ContextApi(props) {
 
   const [progress, setProgress] = useState(0);
 
-  useEffect(() => {
-    all_images();
-    favorite_images();
-    getUser();
-  }, []);
+  
 
   const [socket, setSocket] = useState(null);
   const [onlineUsers, setOnlineUsers] = useState([]);
@@ -144,7 +139,7 @@ export default function ContextApi(props) {
     }
   }, [userInfo]);
 
-  const { setMessages, selectedConversation, messages } = useConversation();
+  const { setMessages, selectedConversation } = useConversation();
   const [msgLoading, setMsgLoading] = useState(false);
   const getMessages = async () => {
     setMsgLoading(true);
